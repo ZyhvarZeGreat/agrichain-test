@@ -2,7 +2,7 @@ import React from 'react'
 import { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption, } from '../../components/ui/table'
 const DisplayBatchData = () => {
   return (
-    <div className='w-full h-[15rem] font-jakarta '>
+    <div className='w-full  font-jakarta '>
       <Table>
         <TableHeader>
           <TableHead className='text-lg'>Added Batches</TableHead>
