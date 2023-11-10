@@ -19,7 +19,7 @@ import { toast } from 'sonner'
 import { ArrowUpIcon, CheckCircledIcon } from '@radix-ui/react-icons'
 // import fetchProducts from '../services/fetchProducts'
 const ProductRegistrationInteraction = () => {
-  const { productName, productCode, products,batchAddresses,setBatchAddresses, setProducts, rawMaterials, materialName, materialCode, setProductCode, setProductName, setRawMaterials, setMaterialName, setMaterialCode } = useProductStore()
+  const { productName, productCode, products, batchAddresses, setBatchAddresses, setProducts, rawMaterials, materialName, materialCode, setProductCode, setProductName, setRawMaterials, setMaterialName, setMaterialCode } = useProductStore()
   const { account, web3, contract, setContract, setAccount, setWeb3 } = useContractStore()
   const [status, setStatus] = useState(null)
   const [txHash, setTxHash] = useState(null)
@@ -29,7 +29,7 @@ const ProductRegistrationInteraction = () => {
 
   const connectWallet = async () => {
 
-    if(!window.ethereum){
+    if (!window.ethereum) {
       toast('Please install Metamask to use this feature', {
         className: 'font-mono text-lg h-[4rem]',
         duration: 2000,
@@ -93,11 +93,11 @@ const ProductRegistrationInteraction = () => {
       const productDataArray = await contract.methods.getAllProductData().call();
       setProducts(productDataArray)
       console.log(productDataArray)
-        const totalBatchAddresses =  productDataArray.map((product) => {
-          return product.bacAddress
-        })
-        setBatchAddresses(totalBatchAddresses)
-  
+      const totalBatchAddresses = productDataArray.map((product) => {
+        return product.bacAddress
+      })
+      setBatchAddresses(totalBatchAddresses)
+
     } catch (error) {
       console.error('Error fetching product data array:', error);
       return [];
@@ -114,10 +114,10 @@ const ProductRegistrationInteraction = () => {
 
 
   useEffect(() => {
-    if (contract !== null || status > 0) {
+    if (contract) {
       fetchProducts()
     }
-  }, [txHash])
+  }, [])
 
 
 
