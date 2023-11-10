@@ -1,0 +1,266 @@
+[
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_productCode",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "materialBatchNumber",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "batchCode",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "rawMaterials",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "sender",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "timestamp",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "tucAddr",
+				"type": "address"
+			}
+		],
+		"name": "BatchAdded",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "materialBatchNumber",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "batchCode",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "rawMaterials",
+				"type": "string"
+			}
+		],
+		"name": "addBatch",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "batchArray",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "materialBatchNumber",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "batchCode",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "rawMaterials",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "batchCount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "batchManager",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "timestamp",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "tucAddress",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "batchCount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "batches",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "materialBatchNumber",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "batchCode",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "rawMaterials",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "batchCount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "batchManager",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "timestamp",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "tucAddress",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getAllBatchAddresses",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "materialBatchNumber",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "batchCode",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "rawMaterials",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "batchCount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "batchManager",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "timestamp",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "tucAddress",
+						"type": "address"
+					}
+				],
+				"internalType": "struct BatchRegistration.Batch[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "owner",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "productCode",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]

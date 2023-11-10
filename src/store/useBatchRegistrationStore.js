@@ -2,11 +2,12 @@ import {create} from 'zustand'
 
 
 const useBatchRegistrationStore = create((set)=>({
-productName:'',
-materials:'',
-BACAddress:'',
-RegistryDate:'',
-batchData: (value) => set [{batchData: value}]
+batchCode:'',
+batchCount:'',
+rawMaterialsUsed:'',
+setBatchCode: (value) => set [{batchCode: value}],
+setBatchCount: (value) => set [{batchCount: value}],
+setRawMaterialsUsed: (value) => set [{rawMaterialsUsed: value}]
 }))
 
 export default useBatchRegistrationStore

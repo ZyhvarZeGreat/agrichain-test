@@ -1,3 +1,10 @@
+
+/**
+ * The function `ProductRegistrationInteraction` is a React component that handles the registration of
+ * products and materials, connects to a wallet using Metamask, fetches product data from a smart
+ * contract, and displays the registered product data.
+ * @returns The component `ProductRegistrationInteraction` is being returned.
+ */
 import React, { useEffect, useState } from 'react'
 import { Button } from "../../components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle, } from "../../components/ui/card"
@@ -7,17 +14,16 @@ import contractABI from '../services/contractABI.json'
 import DisplayProductData from './DisplayProductData'
 import { Label } from "../../components/ui/label"
 import useProductStore from '../store/useProductStore'
+import useContractStore from '../store/useContractStore'
 import { toast } from 'sonner'
 import { ArrowUpIcon, CheckCircledIcon } from '@radix-ui/react-icons'
 // import fetchProducts from '../services/fetchProducts'
 const ProductRegistrationInteraction = () => {
-  const { productName, productCode, products, setProducts, rawMaterials, materialName, materialCode, setProductCode, setProductName, setRawMaterials, setMaterialName, setMaterialCode } = useProductStore()
-
-  const [contract, setContract] = useState(null)
-  const [account, setAccount] = useState(null)
-  const [web3, setWeb3] = useState(null)
+  const { productName, productCode, products,batchAddresses,setBatchAddresses, setProducts, rawMaterials, materialName, materialCode, setProductCode, setProductName, setRawMaterials, setMaterialName, setMaterialCode } = useProductStore()
+  const { account, web3, contract, setContract, setAccount, setWeb3 } = useContractStore()
+  const [status, setStatus] = useState(null)
   const [txHash, setTxHash] = useState(null)
-  const contractAddress = '0x535db0D7aC50cc835044258bd3f3b636a06BF2c6'; // Replace with your contract address'
+  const contractAddress = '0x2fA704B405a4C5041084a6A77577830e1A4046Aa'; // Replace with your contract address'
   const alchemyUrl = 'https://polygon-mumbai.g.alchemy.com/v2/bE6pdrk27bZW93aL3QUr9v_93SCiINit'
   const contractAbi = contractABI
 
@@ -73,17 +79,25 @@ const ProductRegistrationInteraction = () => {
     }
   }
 
+
+
   async function fetchProducts() {
     try {
       const productDataArray = await contract.methods.getAllProductData().call();
       setProducts(productDataArray)
-      // console.log(productName,productCode,rawMaterials,bacAddress)
+      console.log(productDataArray)
+        const totalBatchAddresses =  productDataArray.map((product) => {
+          return product.bacAddress
+        })
+        setBatchAddresses(totalBatchAddresses)
+  
     } catch (error) {
       console.error('Error fetching product data array:', error);
       return [];
     }
 
   }
+
 
   // useEffect(() => {
   //   connectWallet()
@@ -93,22 +107,22 @@ const ProductRegistrationInteraction = () => {
 
 
   useEffect(() => {
-    if (contract !== null) {
+    if (contract !== null || status > 0) {
       fetchProducts()
     }
-  }, [])
+  }, [txHash])
 
 
 
-  const handleRegisterProduct = async () => {                          
-    if(contract === null ) {
-      toast('Please Connect Your Wallet 👆👆',{
+  const handleRegisterProduct = async () => {
+    if (contract === null) {
+      toast('Please Connect Your Wallet 👆👆', {
         className: 'font-mono text-lg h-[4rem]',
         duration: 2000,
         icon: <CheckCircledIcon />
       })
-    } 
-      //ENSURE TO USE THE ENCODE ABI METHOD AFTER TRYING TO INITIALIZE THE CONTRACT
+    }
+    //ENSURE TO USE THE ENCODE ABI METHOD AFTER TRYING TO INITIALIZE THE CONTRACT
     const data = await contract.methods.register(productCode, productName, rawMaterials).encodeABI()
     const params = [{
       from: account[0],
@@ -116,23 +130,24 @@ const ProductRegistrationInteraction = () => {
       data: data
     }]
     let result = await window.ethereum.request({ method: 'eth_sendTransaction', params })
-    .then((hash) => {
-      console.log('Transaction Completed: ' + hash)
-      setTxHash(hash)
-    }).catch(error =>{
-      console.log(error)
-    })
-    const transactionReceipt =  await web3.eth.getTransactionReceipt(txHash)
+      .then((hash) => {
+        console.log('Transaction Completed: ' + hash)
+        setTxHash(hash)
+      }).catch(error => {
+        console.log(error)
+      })
+    const transactionReceipt = await web3.eth.getTransactionReceipt(txHash)
     const status = parseInt(transactionReceipt.status)
-    if(status === 1){
-      toast('Product Registered Successfully',{
+    if (status === 1) {
+      setStatus(status)
+      toast('Product Registered Successfully', {
         className: 'font-mono text-lg h-[4rem]',
         duration: 2000,
         icon: <CheckCircledIcon />
       })
     }
-    else{
-      toast('Product Registration Failed',{
+    else {
+      toast('Product Registration Failed', {
         className: 'font-mono text-lg h-[4rem]',
         duration: 2000,
         icon: <CheckCircledIcon />

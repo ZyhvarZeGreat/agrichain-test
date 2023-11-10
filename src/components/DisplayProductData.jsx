@@ -19,7 +19,7 @@ const DisplayProductData = () => {
     )
    })
   return (
-    <div className='w-full h-[15rem] font-jakarta '>
+    <div className='w-full h-[15rem] font-jakarta overflow-y-scroll '>
       <Table >
         <TableCaption className='text-lg'>Registered Products and Materials</TableCaption>
         <TableHeader>
