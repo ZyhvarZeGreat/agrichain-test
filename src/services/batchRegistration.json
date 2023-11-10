@@ -1,16 +1,5 @@
 [
 	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_productCode",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
 		"anonymous": false,
 		"inputs": [
 			{
@@ -22,7 +11,7 @@
 			{
 				"indexed": false,
 				"internalType": "uint256",
-				"name": "batchCode",
+				"name": "batchAmount",
 				"type": "uint256"
 			},
 			{
@@ -62,7 +51,7 @@
 			},
 			{
 				"internalType": "uint256",
-				"name": "batchCode",
+				"name": "batchAmount",
 				"type": "uint256"
 			},
 			{
@@ -75,6 +64,17 @@
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_productCode",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
 	},
 	{
 		"inputs": [
@@ -93,7 +93,7 @@
 			},
 			{
 				"internalType": "uint256",
-				"name": "batchCode",
+				"name": "batchAmount",
 				"type": "uint256"
 			},
 			{
@@ -155,7 +155,7 @@
 			},
 			{
 				"internalType": "uint256",
-				"name": "batchCode",
+				"name": "batchAmount",
 				"type": "uint256"
 			},
 			{
@@ -200,7 +200,7 @@
 					},
 					{
 						"internalType": "uint256",
-						"name": "batchCode",
+						"name": "batchAmount",
 						"type": "uint256"
 					},
 					{

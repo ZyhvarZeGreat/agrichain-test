@@ -23,12 +23,19 @@ const ProductRegistrationInteraction = () => {
   const { account, web3, contract, setContract, setAccount, setWeb3 } = useContractStore()
   const [status, setStatus] = useState(null)
   const [txHash, setTxHash] = useState(null)
-  const contractAddress = '0x2fA704B405a4C5041084a6A77577830e1A4046Aa'; // Replace with your contract address'
+  const contractAddress = '0xb4CEa98CB017DbFEfAFdAd071Fb5a483d8a728bf'; // Replace with your contract address'
   const alchemyUrl = 'https://polygon-mumbai.g.alchemy.com/v2/bE6pdrk27bZW93aL3QUr9v_93SCiINit'
   const contractAbi = contractABI
 
   const connectWallet = async () => {
 
+    if(!window.ethereum){
+      toast('Please install Metamask to use this feature', {
+        className: 'font-mono text-lg h-[4rem]',
+        duration: 2000,
+        icon: <CheckCircledIcon />
+      })
+    }
     try {
       await window.ethereum.request({
         method: 'wallet_switchEthereumChain',
