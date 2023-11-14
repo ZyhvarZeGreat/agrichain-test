@@ -1,11 +1,27 @@
 [
 	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_productCode",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "_manager",
+				"type": "address"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
 		"anonymous": false,
 		"inputs": [
 			{
 				"indexed": false,
 				"internalType": "uint256",
-				"name": "materialBatchNumber",
+				"name": "batchCode",
 				"type": "uint256"
 			},
 			{
@@ -23,7 +39,7 @@
 			{
 				"indexed": false,
 				"internalType": "address",
-				"name": "sender",
+				"name": "batchManager",
 				"type": "address"
 			},
 			{
@@ -35,7 +51,7 @@
 			{
 				"indexed": false,
 				"internalType": "address",
-				"name": "tucAddr",
+				"name": "tucAddress",
 				"type": "address"
 			}
 		],
@@ -46,7 +62,7 @@
 		"inputs": [
 			{
 				"internalType": "uint256",
-				"name": "materialBatchNumber",
+				"name": "batchCode",
 				"type": "uint256"
 			},
 			{
@@ -69,17 +85,6 @@
 		"inputs": [
 			{
 				"internalType": "uint256",
-				"name": "_productCode",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
 			}
@@ -88,7 +93,7 @@
 		"outputs": [
 			{
 				"internalType": "uint256",
-				"name": "materialBatchNumber",
+				"name": "batchCode",
 				"type": "uint256"
 			},
 			{
@@ -100,11 +105,6 @@
 				"internalType": "string",
 				"name": "rawMaterials",
 				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "batchCount",
-				"type": "uint256"
 			},
 			{
 				"internalType": "address",
@@ -150,7 +150,7 @@
 		"outputs": [
 			{
 				"internalType": "uint256",
-				"name": "materialBatchNumber",
+				"name": "batchCode",
 				"type": "uint256"
 			},
 			{
@@ -162,11 +162,6 @@
 				"internalType": "string",
 				"name": "rawMaterials",
 				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "batchCount",
-				"type": "uint256"
 			},
 			{
 				"internalType": "address",
@@ -189,13 +184,13 @@
 	},
 	{
 		"inputs": [],
-		"name": "getAllBatchAddresses",
+		"name": "getAllBatches",
 		"outputs": [
 			{
 				"components": [
 					{
 						"internalType": "uint256",
-						"name": "materialBatchNumber",
+						"name": "batchCode",
 						"type": "uint256"
 					},
 					{
@@ -207,11 +202,6 @@
 						"internalType": "string",
 						"name": "rawMaterials",
 						"type": "string"
-					},
-					{
-						"internalType": "uint256",
-						"name": "batchCount",
-						"type": "uint256"
 					},
 					{
 						"internalType": "address",
@@ -238,8 +228,27 @@
 		"type": "function"
 	},
 	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "batchCode",
+				"type": "uint256"
+			}
+		],
+		"name": "getTUCAddressForBatch",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [],
-		"name": "owner",
+		"name": "manager",
 		"outputs": [
 			{
 				"internalType": "address",

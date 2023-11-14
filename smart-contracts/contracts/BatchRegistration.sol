@@ -28,8 +28,9 @@ contract BatchRegistration {
     );
     Batch[] public batchArray;
 
-    constructor(uint256 _productCode) {
-        owner = msg.sender;
+ 
+    constructor(uint256 _productCode, address _owner) {
+        owner = _owner;
         productCode = _productCode;
         batchCount = 0;
     }

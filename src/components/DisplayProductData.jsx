@@ -2,6 +2,7 @@ import React from 'react'
 import useProductStore from '../store/useProductStore'
 
 import { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption, } from '../../components/ui/table'
+import { formatDate } from '../services/formatDate'
 const DisplayProductData = () => {
   const { products } = useProductStore()
   const productTable= products.map((product,i)=>{
@@ -14,7 +15,7 @@ const DisplayProductData = () => {
         <TableCell>{product.rawMaterials}</TableCell>
         <TableCell>{product.owner}</TableCell>
         <TableCell>{product.bacAddress}</TableCell>
-        <TableCell>{product.registrationTime.toString()}</TableCell>
+        <TableCell>{formatDate(product.registrationTime.toString())}</TableCell>
       </TableRow>
     )
    })

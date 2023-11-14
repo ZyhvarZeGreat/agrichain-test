@@ -53,7 +53,7 @@ contract ProductRegistration {
         newProduct.rawMaterials = rawMaterials;
         newProduct.registrationTime = block.timestamp;
         // Deploy a new BAC contract and store its address
-        BatchRegistration newBAC = new BatchRegistration(productCode);
+        BatchRegistration newBAC = new BatchRegistration(productCode,msg.sender);
         newProduct.bacAddress = address(newBAC);
         productToBatch[productCode] = address(newBAC);
         // Add the product to the array

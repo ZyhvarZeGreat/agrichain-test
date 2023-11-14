@@ -12,6 +12,7 @@ import { Input } from "../../components/ui/input"
 import { Web3 } from 'web3'
 import contractABI from '../services/contractABI.json'
 import DisplayProductData from './DisplayProductData'
+
 import { Label } from "../../components/ui/label"
 import useProductStore from '../store/useProductStore'
 import useContractStore from '../store/useContractStore'
@@ -23,11 +24,12 @@ const ProductRegistrationInteraction = () => {
   const { account, web3, contract, setContract, setAccount, setWeb3 } = useContractStore()
   const [status, setStatus] = useState(null)
   const [txHash, setTxHash] = useState(null)
-  const contractAddress = '0xb4CEa98CB017DbFEfAFdAd071Fb5a483d8a728bf'; // Replace with your contract address'
+  const contractAddress = '0xF922435e7Ae81D3e992521D6976a68252235a9A8'; // Replace with your contract address'
   const alchemyUrl = 'https://polygon-mumbai.g.alchemy.com/v2/bE6pdrk27bZW93aL3QUr9v_93SCiINit'
   const contractAbi = contractABI
 
   const connectWallet = async () => {
+
 
     if (!window.ethereum) {
       toast('Please install Metamask to use this feature', {
@@ -65,7 +67,7 @@ const ProductRegistrationInteraction = () => {
         setWeb3(web3)
         const contract = new web3.eth.Contract(contractABI, contractAddress);
         setContract(contract)
-        web3.eth.defaultAccount = accounts[0]
+        web3.eth.defaultAccount = accounts[1]
       }
       else {
         console.log('Metamask is  not connected')
@@ -117,7 +119,7 @@ const ProductRegistrationInteraction = () => {
     if (contract) {
       fetchProducts()
     }
-  }, [])
+  }, [account,txHash])
 
 
 
@@ -131,6 +133,7 @@ const ProductRegistrationInteraction = () => {
     }
     //ENSURE TO USE THE ENCODE ABI METHOD AFTER TRYING TO INITIALIZE THE CONTRACT
     const data = await contract.methods.register(productCode, productName, rawMaterials).encodeABI()
+    
     const params = [{
       from: account[0],
       to: contractAddress,
@@ -140,12 +143,15 @@ const ProductRegistrationInteraction = () => {
       .then((hash) => {
         console.log('Transaction Completed: ' + hash)
         setTxHash(hash)
-      }).catch(error => {
-        console.log(error)
+      }).catch((error )=> {
+        console.log(error.message)
       })
+      
+      console.log(result)
     const transactionReceipt = await web3.eth.getTransactionReceipt(txHash)
     const status = parseInt(transactionReceipt.status)
-    if (status === 1) {
+  
+    if (status > 0) {
       setStatus(status)
       toast('Product Registered Successfully', {
         className: 'font-mono text-lg h-[4rem]',
