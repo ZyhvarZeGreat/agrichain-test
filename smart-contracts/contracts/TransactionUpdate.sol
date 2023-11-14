@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 contract TransactionUpdate {
     address public owner;
-    string public materialBatchNumber;
+    uint256 batchCode;
     uint public transactionCount;
     mapping(bytes32 => bool) transactions;
     mapping(bytes32 => address) batchTransfers;
@@ -27,9 +27,9 @@ contract TransactionUpdate {
     event CustodyTransferred(address newCustodian, bytes32 transactionHash);
     event BatchTransferred(bytes32 transactionHash, address currentCustodian);
 
-    constructor(string memory _materialBatchNumber) {
+    constructor(uint256 _batchCode) {
         owner = msg.sender;
-        materialBatchNumber = _materialBatchNumber;
+        batchCode = _batchCode;
         transactionCount = 0;
     }
 
@@ -40,55 +40,62 @@ contract TransactionUpdate {
 
     function addTransaction(
         address receiver,
-        bytes32 previousTr,
-        bytes32 currentTr
+        bytes32 productCode,
+        bytes32 batchNumber,
+        bytes32 previousTr
     ) public onlyAuthorized {
         bytes32 transactionHash = keccak256(
             abi.encodePacked(
                 msg.sender,
                 receiver,
                 block.timestamp,
-                previousTr,
-                currentTr
+                productCode,
+                batchNumber,
+                previousTr
             )
         );
 
-        require(!transactions[transactionHash], "Transaction already added");
-        require(
-            transactions[previousTr],
-            "Previous transaction does not exist"
-        );
+        // Check if the product is transferred for the first time or not
+        if (!transactions[previousTr]) {
+            // If it's the first transfer, check that the product code and batch number are valid
+            require(productCode != bytes32(0), "Invalid product code");
+            require(batchNumber != bytes32(0), "Invalid batch number");
+        } else {
+            // If not the first transfer, reference the hash of the previous transaction
+            require(transactions[previousTr], "Previous transaction does not exist");
+        }
 
         transactionCount++;
         transactions[transactionHash] = true;
         batchTransfers[transactionHash] = receiver;
         transfersByUser[msg.sender].push(receiver);
 
+        // Add the transaction data to the list
+        transactionData[transactionHash] = Transaction({
+            sender: msg.sender,
+            receiver: receiver,
+            timestamp: block.timestamp,
+            previousTr: previousTr
+        });
+
         emit TransactionAdded(
             msg.sender,
             receiver,
             block.timestamp,
             previousTr,
-            currentTr
+            transactionHash
         );
     }
 
     function transferCustody(
         address newCustodian,
-        bytes32 previousTr
+        uint256 _batchCode
     ) public onlyAuthorized {
-        bytes32 transactionHash = keccak256(
-            abi.encodePacked(
-                msg.sender,
-                newCustodian,
-                block.timestamp,
-                previousTr
-            )
-        );
+        bytes32 transactionHash = generateTransactionHash(batchCode);
 
         require(!transactions[transactionHash], "Transaction already added");
         require(
-            transactions[previousTr],
+            transactions[transactionData[generateTransactionHash(_batchCode)].previousTr],
             "Previous transaction does not exist"
         );
 
@@ -101,37 +108,29 @@ contract TransactionUpdate {
         emit BatchTransferred(transactionHash, newCustodian);
     }
 
-    function getBatchCustodian(
+    function transferCustody(
+        address newCustodian,
         bytes32 transactionHash
-    ) public view returns (address) {
-        return batchTransfers[transactionHash];
-    }
-
-    function getUserTransfers(
-        address user
-    ) public view returns (address[] memory) {
-        return transfersByUser[user];
-    }
-
-    function getTransactionData(
-        bytes32 transactionHash
-    )
-        public
-        view
-        returns (
-            address sender,
-            address receiver,
-            uint timestamp,
-            bytes32 previousTr
-        )
-    {
-        require(transactions[transactionHash], "Transaction does not exist");
-        Transaction storage transaction = transactionData[transactionHash];
-        return (
-            transaction.sender,
-            transaction.receiver,
-            transaction.timestamp,
-            transaction.previousTr
+    ) public onlyAuthorized {
+        require(!transactions[transactionHash], "Transaction already added");
+        require(
+            transactions[transactionData[transactionHash].previousTr],
+            "Previous transaction does not exist"
         );
+
+        transactionCount++;
+        transactions[transactionHash] = true;
+        batchTransfers[transactionHash] = newCustodian;
+        transfersByUser[msg.sender].push(newCustodian);
+
+        emit CustodyTransferred(newCustodian, transactionHash);
+        emit BatchTransferred(transactionHash, newCustodian);
     }
+
+    // Helper function to generate transaction hash from batch code
+    function generateTransactionHash(uint256 _batchCode) internal pure returns (bytes32) {
+        return keccak256(abi.encodePacked(_batchCode));
+    }
+
+    // ... (existing code)
 }
