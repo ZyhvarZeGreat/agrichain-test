@@ -11,7 +11,7 @@ import { Label } from "../../components/ui/label"
 import { CrossCircledIcon, CheckCircledIcon } from '@radix-ui/react-icons'
 const BatchRegistrationInteraction = () => {
   const invalidAddress = '0x0000000000000000000000000000000000000000'
-  const { batchAddresses,batches,setBatches } = useProductStore()
+  const { batchAddresses, batches, setBatches } = useProductStore()
   const { web3, account, contract } = useContractStore()
   const [productCode, setProductCode] = useState(null)
   const [batchCode, setBatchCode] = useState(null)
@@ -56,29 +56,29 @@ const BatchRegistrationInteraction = () => {
 
   const addBatch = async () => {
 
-     if (!batchCode || !batchCount || !rawMaterialsUsed) {
-    // Handle the case where one of the values is not defined
-    console.error("Invalid values for batchCode, batchCount, or rawMaterialsUsed");
-    toast('Please fill in all the values', {
-      className: 'font-mono text-lg h-[4rem]',
-      duration: 2000,
-      icon: <CrossCircledIcon />
-    })
-    return;
-  }
+    if (!batchCode || !batchCount || !rawMaterialsUsed) {
+      // Handle the case where one of the values is not defined
+      console.error("Invalid values for batchCode, batchCount, or rawMaterialsUsed");
+      toast('Please fill in all the values', {
+        className: 'font-mono text-lg h-[4rem]',
+        duration: 2000,
+        icon: <CrossCircledIcon />
+      })
+      return;
+    }
     const batchABI = ContractABI
-    const batchContract = await  new web3.eth.Contract(batchABI,batchAddress)
+    const batchContract = await new web3.eth.Contract(batchABI, batchAddress)
     // const gas = await batchContract.methods.addBatch(batchCode,batchCount,rawMaterialsUsed).estimateGas()
     // console.log(gas)
-    const data = await batchContract.methods.addBatch(batchCode,batchCount,rawMaterialsUsed).encodeABI()
-      const params = [{
-        from:account[0],
-        to:batchAddress,
-        data:data,
+    const data = await batchContract.methods.addBatch(batchCode, batchCount, rawMaterialsUsed).encodeABI()
+    const params = [{
+      from: account[0],
+      to: batchAddress,
+      data: data,
 
-      }]
+    }]
 
-      let result = await window.ethereum.request({ method: 'eth_sendTransaction', params })
+    let result = await window.ethereum.request({ method: 'eth_sendTransaction', params })
       .then((hash) => {
         console.log('Transaction Hash: ' + hash)
         setTxHash(hash)
@@ -86,12 +86,12 @@ const BatchRegistrationInteraction = () => {
         console.log(error)
       })
 
-  
-      if(txHash !== null || txHash !== undefined){
-        const transactionReceipt = await web3.eth.getTransactionReceipt(txHash)
-      
+
+    if (txHash !== null || txHash !== undefined) {
+      const transactionReceipt = await web3.eth.getTransactionReceipt(txHash)
+
       const status = parseInt(transactionReceipt.status)
-      if (status === false){
+      if (status === false) {
         console.log('Transaction Failed' + transactionReceipt.errorMessage)
       }
       setStatus(status)
@@ -117,12 +117,13 @@ const BatchRegistrationInteraction = () => {
 
   }
 
+ 
   const retrieveAllBatches = async () => {
     const totalBatchesArray = []
     for (const address of batchAddresses) {
-      const batchContract = await new web3.eth.Contract(ContractABI,address)
-      const batchesArray  = await batchContract.methods.getAllBatches().call()
-       totalBatchesArray.push(batchesArray)
+      const batchContract = await new web3.eth.Contract(ContractABI, address)
+      const batchesArray = await batchContract.methods.getAllBatches().call()
+      totalBatchesArray.push(batchesArray)
     }
     const flattenedBatches = ([].concat(...totalBatchesArray).filter(item => typeof item === 'object'))
     setTotalBatches(flattenedBatches)
@@ -130,17 +131,19 @@ const BatchRegistrationInteraction = () => {
     console.log(flattenedBatches)
     return totalBatchesArray
   }
- useEffect(() => {
-  retrieveAllBatches()
- }, [account,txHash])
- 
+  useEffect(() => {
+    if (contract) {
+      retrieveAllBatches()
+    }
+  }, [account, txHash])
+
 
   return (
     <Card>
       <CardHeader>
         <CardTitle className='font-spaceGrotesk text-[1.8rem]'>Batch Registration</CardTitle>
         <CardDescription className='font-jakarta text-md text-gray-800 font-semibold'>
-        Add Your Products in Batches
+          Add Your Products in Batches
         </CardDescription>
       </CardHeader>
 
@@ -154,11 +157,11 @@ const BatchRegistrationInteraction = () => {
 
         <div className="space-y-1">
           <Label htmlFor="batch-code">Batch Code</Label>
-          <Input id="name" placeholder='234ec1'  value={batchCode} onChange={(e) => { setBatchCode(e.target.value) }}  />
+          <Input id="name" placeholder='234ec1' value={batchCode} onChange={(e) => { setBatchCode(e.target.value) }} />
         </div>
         <div className="space-y-1">
           <Label htmlFor="batch-count">Batch Count</Label>
-          <Input id="batch-count" placeholder='100'  value={batchCount} onChange={(e) => { setBatchCount(e.target.value) }}  />
+          <Input id="batch-count" placeholder='100' value={batchCount} onChange={(e) => { setBatchCount(e.target.value) }} />
         </div>
         <div className="space-y-1">
           <Label htmlFor="raw-materials" >Raw Materials Used</Label>
@@ -166,14 +169,14 @@ const BatchRegistrationInteraction = () => {
         </div>
       </CardContent>
       <CardFooter>
-        <Button onClick={addBatch} className='font-jakarta'>Add Batch</Button> 
+        <Button onClick={addBatch} className='font-jakarta'>Add Batch</Button>
       </CardFooter>
 
       <CardContent>
         <DisplayBatchData data={totalBatches} />
       </CardContent>
 
-{/* 
+      {/* 
       <CardContent className="space-y-1  flex flex-col items-center  justify-center  gap-4 font-jakarta">
 
         {found ? <div className='flex flex-col items-start justify-center w-full gap-4'>
