@@ -24,7 +24,7 @@ const ProductRegistrationInteraction = () => {
   const { account, web3, contract, setContract, setAccount, setWeb3 } = useContractStore()
   const [status, setStatus] = useState(null)
   const [txHash, setTxHash] = useState(null)
-  const contractAddress = '0x0cFA9DF188fbdf683a9D87498Ab63F2041DaaDFe'; // Replace with your contract address'
+  const contractAddress = '0x6392A57DbF2b1d7aB52b8C8a73c859461699938c'; // Replace with your contract address'
   const alchemyUrl = 'https://polygon-mumbai.g.alchemy.com/v2/bE6pdrk27bZW93aL3QUr9v_93SCiINit'
   const contractAbi = contractABI
 

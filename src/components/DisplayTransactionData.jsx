@@ -8,7 +8,7 @@ const DisplayTransactionData = ({data}) => {
       <TableRow key={i}>
         <TableCell>{i + 1}</TableCell>
         <TableCell>TX Hash </TableCell>
-        <TableCell>{tx?.previousTr.substring(0,18)} </TableCell>
+        <TableCell>{tx?.previousTr.substring(0,23)} </TableCell>
         <TableCell>{tx?.sender}</TableCell>
         <TableCell>{tx?.receiver}</TableCell>
         <TableCell>{tx?.rawMaterials}</TableCell>
@@ -20,16 +20,16 @@ const DisplayTransactionData = ({data}) => {
   })
   return (
     <div className='w-full h-[15rem] font-jakarta overflow-y-scroll '>
-    <Table >
+    <Table className='w-full'>
       <TableCaption className='text-lg'>Registered transactions and Materials</TableCaption>
-      <TableHeader>
+      <TableHeader className='w-full bg-red-500'>
         <TableRow>
           <TableHead>     S/N</TableHead>
           <TableHead>   TX Hash</TableHead>
           <TableHead>  Previous TX</TableHead>
           <TableHead> Sender</TableHead>
           <TableHead>    Receiver</TableHead> 
-          <TableHead className='flex  items-center justify-center'>    TimeStamp</TableHead>
+          <TableHead className='flex  items-center justify-center'> TimeStamp</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>

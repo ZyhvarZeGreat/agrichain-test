@@ -85,6 +85,12 @@
 				"internalType": "bytes32",
 				"name": "currentTr",
 				"type": "bytes32"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "batchCode",
+				"type": "uint256"
 			}
 		],
 		"name": "TransactionAdded",
@@ -121,6 +127,11 @@
 				"type": "bytes32"
 			},
 			{
+				"internalType": "bytes32",
+				"name": "currentTr",
+				"type": "bytes32"
+			},
+			{
 				"internalType": "uint256",
 				"name": "batchCode",
 				"type": "uint256"
@@ -153,6 +164,11 @@
 					{
 						"internalType": "bytes32",
 						"name": "previousTr",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "currentTr",
 						"type": "bytes32"
 					},
 					{
@@ -226,6 +242,11 @@
 				"type": "bytes32"
 			},
 			{
+				"internalType": "bytes32",
+				"name": "currentTr",
+				"type": "bytes32"
+			},
+			{
 				"internalType": "uint256",
 				"name": "batchCode",
 				"type": "uint256"
@@ -242,26 +263,8 @@
 				"type": "address"
 			},
 			{
-				"internalType": "uint256",
-				"name": "batchCodeValue",
-				"type": "uint256"
-			}
-		],
-		"name": "transferCustody",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "newCustodian",
-				"type": "address"
-			},
-			{
 				"internalType": "bytes32",
-				"name": "transactionHash",
+				"name": "inputHashOrBatchCode",
 				"type": "bytes32"
 			}
 		],

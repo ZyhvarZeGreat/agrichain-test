@@ -28,8 +28,6 @@ const TransactionRegistrationInteraction = () => {
 
   const findBatchesByCode = async () => {
     const contractObj = batches.find((batch) => { return batch.batchCode.toString() === batchCode })
-
-    setTotalAddresses(getAllAddresses())
     try {
       const targetAddress = contractObj.batchManager
       const contract = await new web3.eth.Contract(ContractABI, targetAddress)
@@ -191,7 +189,7 @@ const TransactionRegistrationInteraction = () => {
         <Button className='mt-6' onClick={updateTransaction}>
           Transfer Batches
         </Button>
-        <Button className='mt-6' onClick={getAllTransactions}>
+        <Button className='mt-6 ml-4' onClick={getAllTransactions}>
           Fetch Transactions
         </Button>
       </CardContent>
