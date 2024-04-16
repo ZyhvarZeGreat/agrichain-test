@@ -1,6 +1,6 @@
 import React from 'react'
-import { formatDate } from '../services/formatDate'
-import { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption, } from '../../components/ui/table'
+import { formatDate } from '../../services/formatDate'
+import { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption, } from '../../../components/ui/table'
 const DisplayBatchData = ({ data }) => {
   // console.log(typeof Number(data[0].timestamp.toString()))
   // const sortedData = data.sort((a, b) => parseInt(Number(a.timestamp.toString()) - Number(b.timestamp.toString())))

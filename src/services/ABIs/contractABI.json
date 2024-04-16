@@ -36,10 +36,45 @@
 				"internalType": "address",
 				"name": "bacAddr",
 				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "gasUsed",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "timeTaken",
+				"type": "uint256"
 			}
 		],
 		"name": "ProductRegistered",
 		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "productCode",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "productName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "rawMaterials",
+				"type": "string"
+			}
+		],
+		"name": "register",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
 	},
 	{
 		"inputs": [],
@@ -76,6 +111,16 @@
 						"internalType": "uint256",
 						"name": "registrationTime",
 						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "gasUsed",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "timeTaken",
+						"type": "uint256"
 					}
 				],
 				"internalType": "struct ProductRegistration.Product[]",
@@ -100,6 +145,31 @@
 				"internalType": "address",
 				"name": "",
 				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getTransactionStats",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "gasUsed",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "timeTaken",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct ProductRegistration.TransactionStats[]",
+				"name": "",
+				"type": "tuple[]"
 			}
 		],
 		"stateMutability": "view",
@@ -156,6 +226,16 @@
 			{
 				"internalType": "uint256",
 				"name": "registrationTime",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "gasUsed",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "timeTaken",
 				"type": "uint256"
 			}
 		],
@@ -214,6 +294,16 @@
 				"internalType": "uint256",
 				"name": "registrationTime",
 				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "gasUsed",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "timeTaken",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -223,23 +313,56 @@
 		"inputs": [
 			{
 				"internalType": "uint256",
-				"name": "productCode",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "productToBatch",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "registrationCounter",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "transactionStatsArray",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "gasUsed",
 				"type": "uint256"
 			},
 			{
-				"internalType": "string",
-				"name": "productName",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "rawMaterials",
-				"type": "string"
+				"internalType": "uint256",
+				"name": "timeTaken",
+				"type": "uint256"
 			}
 		],
-		"name": "register",
-		"outputs": [],
-		"stateMutability": "nonpayable",
+		"stateMutability": "view",
 		"type": "function"
 	}
 ]

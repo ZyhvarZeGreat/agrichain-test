@@ -20,7 +20,6 @@ contract ProductRegistration {
 
     // Define an array to store product details
     Product[] public productArray;
-    
 
     event ProductRegistered(
         uint256 productCode,
@@ -39,12 +38,14 @@ contract ProductRegistration {
         require(msg.sender == owner, "Unauthorized");
         _;
     }
-
     function register(
         uint256 productCode,
         string memory productName,
         string memory rawMaterials
     ) public onlyAuthorized {
+        // Check if the product with the given code already exists
+        require(products[productCode].productCode == 0, "Product with this code already exists");
+
         productCount++;
         Product storage newProduct = products[productCode];
         newProduct.productCode = productCode;
@@ -53,7 +54,7 @@ contract ProductRegistration {
         newProduct.rawMaterials = rawMaterials;
         newProduct.registrationTime = block.timestamp;
         // Deploy a new BAC contract and store its address
-        BatchRegistration newBAC = new BatchRegistration(productCode,msg.sender);
+        BatchRegistration newBAC = new BatchRegistration(productCode,msg.sender,msg.sender);
         newProduct.bacAddress = address(newBAC);
         productToBatch[productCode] = address(newBAC);
         // Add the product to the array
@@ -80,5 +81,4 @@ contract ProductRegistration {
     {
         return productToBatch[productCode];
     }
-
 }

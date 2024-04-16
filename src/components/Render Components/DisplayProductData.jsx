@@ -1,10 +1,10 @@
 import React from 'react'
-import useProductStore from '../store/useProductStore'
+import useProductStore from '../../services/store/useProductStore'
 
-import { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption, } from '../../components/ui/table'
-import { formatDate } from '../services/formatDate'
+import { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption, } from '../../../components/ui/table'
+import { formatDate } from '../../services/formatDate'
 const DisplayProductData = () => {
-  const { products } = useProductStore()
+  const { products,transactionStats } = useProductStore()
   const productTable= products.map((product,i)=>{
     
     return (

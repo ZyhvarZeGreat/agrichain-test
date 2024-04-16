@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Web3 } from 'web3'
-import useProductStore from '../store/useProductStore'
+import useProductStore from './store/useProductStore'
 import { ArrowUpIcon, CheckCircledIcon } from '@radix-ui/react-icons'
 import contractABI from './contractABI.json'
 const [contract, setContract] = useState(null)

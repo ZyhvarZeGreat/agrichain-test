@@ -10,6 +10,7 @@ const useProductStore = create((set) => ({
   transactions: [],
   batchAddresses: [],
   batches:[],
+  transactionStats:[],
   setProductCode: (value) => set({ productCode: value }),
   setProductName: (value) => set({ productName: value }),
   setRawMaterials: (value) => set({ rawMaterials: value }),
@@ -19,5 +20,6 @@ const useProductStore = create((set) => ({
   setBatchAddresses: (value) => set({ batchAddresses: value }),
   setTransactions: (value) => set({ transactions: value }),
   setBatches: (value) => set({ batches: value }),
+  setTransactionStats: (value) => set({transactionStats:value}),
 }));
 export default useProductStore;

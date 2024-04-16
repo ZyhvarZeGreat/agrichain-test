@@ -20,9 +20,9 @@
 		"inputs": [
 			{
 				"indexed": false,
-				"internalType": "bytes32",
+				"internalType": "string",
 				"name": "transactionHash",
-				"type": "bytes32"
+				"type": "string"
 			},
 			{
 				"indexed": false,
@@ -45,9 +45,9 @@
 			},
 			{
 				"indexed": false,
-				"internalType": "bytes32",
+				"internalType": "string",
 				"name": "transactionHash",
-				"type": "bytes32"
+				"type": "string"
 			}
 		],
 		"name": "CustodyTransferred",
@@ -76,15 +76,15 @@
 			},
 			{
 				"indexed": false,
-				"internalType": "bytes32",
+				"internalType": "string",
 				"name": "previousTr",
-				"type": "bytes32"
+				"type": "string"
 			},
 			{
 				"indexed": false,
-				"internalType": "bytes32",
+				"internalType": "string",
 				"name": "currentTr",
-				"type": "bytes32"
+				"type": "string"
 			},
 			{
 				"indexed": false,
@@ -122,14 +122,14 @@
 				"type": "uint256"
 			},
 			{
-				"internalType": "bytes32",
+				"internalType": "string",
 				"name": "previousTr",
-				"type": "bytes32"
+				"type": "string"
 			},
 			{
-				"internalType": "bytes32",
+				"internalType": "string",
 				"name": "currentTr",
-				"type": "bytes32"
+				"type": "string"
 			},
 			{
 				"internalType": "uint256",
@@ -162,14 +162,14 @@
 						"type": "uint256"
 					},
 					{
-						"internalType": "bytes32",
+						"internalType": "string",
 						"name": "previousTr",
-						"type": "bytes32"
+						"type": "string"
 					},
 					{
-						"internalType": "bytes32",
+						"internalType": "string",
 						"name": "currentTr",
-						"type": "bytes32"
+						"type": "string"
 					},
 					{
 						"internalType": "uint256",
@@ -214,9 +214,9 @@
 	{
 		"inputs": [
 			{
-				"internalType": "bytes32",
+				"internalType": "string",
 				"name": "",
-				"type": "bytes32"
+				"type": "string"
 			}
 		],
 		"name": "transactionData",
@@ -237,14 +237,14 @@
 				"type": "uint256"
 			},
 			{
-				"internalType": "bytes32",
+				"internalType": "string",
 				"name": "previousTr",
-				"type": "bytes32"
+				"type": "string"
 			},
 			{
-				"internalType": "bytes32",
+				"internalType": "string",
 				"name": "currentTr",
-				"type": "bytes32"
+				"type": "string"
 			},
 			{
 				"internalType": "uint256",
@@ -263,12 +263,17 @@
 				"type": "address"
 			},
 			{
-				"internalType": "bytes32",
+				"internalType": "string",
 				"name": "inputHashOrBatchCode",
-				"type": "bytes32"
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "previousTransactionHash",
+				"type": "string"
 			}
 		],
-		"name": "transferCustody",
+		"name": "transferCustodyString",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"

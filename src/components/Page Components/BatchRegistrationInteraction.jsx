@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react'
-import { Button } from "../../components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle, } from "../../components/ui/card"
-import DisplayBatchData from './DisplayBatchData'
-import { Input } from "../../components/ui/input"
-import ContractABI from '../services/batchRegistration.json'
+import { Button } from "../../../components/ui/button"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle, } from "../../../components/ui/card"
+import DisplayBatchData from '../Render Components/DisplayBatchData'
+import { Input } from "../../../components/ui/input"
+import ContractABI from '../../services/ABIs/batchRegistration.json'
 import { toast } from 'sonner'
-import useContractStore from '../store/useContractStore'
-import useProductStore from '../store/useProductStore'
-import { Label } from "../../components/ui/label"
+import useContractStore from '../../services/store/useContractStore'
+import useProductStore from '../../services/store/useProductStore'
+import { Label } from "../../../components/ui/label"
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z, string, number } from 'zod'
 import { CrossCircledIcon, CheckCircledIcon } from '@radix-ui/react-icons'
+import { useForm } from 'react-hook-form'
 const BatchRegistrationInteraction = () => {
   const invalidAddress = '0x0000000000000000000000000000000000000000'
   const { batchAddresses, batches, setBatches } = useProductStore()
@@ -24,12 +27,25 @@ const BatchRegistrationInteraction = () => {
   const [status, setStatus] = useState(null)
 
 
+  const batchSchema = z.object({
+    product_code: string().startsWith('6').min(13),
+    batch_code: string().startsWith('1').min(13),
+    batch_count: string().min(1),
+    raw_materials_used: string().min(3, { message: 'Raw Material must be at least 3 characters' })
+  })
+  
+  const { register, control, getValues, formState, handleSubmit } = useForm({
+    resolver: zodResolver(batchSchema)
+  })
+
+  
+  const { errors } = formState
 
 
   const findProductsByCode = async () => {
     try {
       const targetAddress = await contract.methods.getBACAddressForProduct(productCode).call()
-      console.log(targetAddress, invalidAddress)
+
       setBatchAddress(targetAddress)
       if (targetAddress !== invalidAddress) {
         toast(`Product Found with address ${targetAddress}`, {
@@ -38,13 +54,11 @@ const BatchRegistrationInteraction = () => {
           icon: <CheckCircledIcon />
         })
       }
-      else if (targetAddress === invalidAddress) {
         toast(`Product Not Found, please input a valid code`, {
           className: 'font-mono text-lg h-[4rem]',
           duration: 2000,
           icon: <CrossCircledIcon />
         })
-      }
     }
     catch (error) {
       console.error('Error fetching product data array:', error);
@@ -53,28 +67,22 @@ const BatchRegistrationInteraction = () => {
     console.log('clicked ' + productCode, batchAddress)
   }
 
-
-  const addBatch = async () => {
-
-    if (!batchCode || !batchCount || !rawMaterialsUsed) {
-      // Handle the case where one of the values is not defined
-      console.error("Invalid values for batchCode, batchCount, or rawMaterialsUsed");
-      toast('Please fill in all the values', {
-        className: 'font-mono text-lg h-[4rem]',
-        duration: 2000,
-        icon: <CrossCircledIcon />
-      })
-      return;
+  const onSubmit = () => {
+    if (Object.keys(errors) !== 0) {
+      addBatch(getValues())
     }
+  }
+
+  const addBatch = async (data) => {
+
+  
     const batchABI = ContractABI
     const batchContract = await new web3.eth.Contract(batchABI, batchAddress)
-    // const gas = await batchContract.methods.addBatch(batchCode,batchCount,rawMaterialsUsed).estimateGas()
-    // console.log(gas)
-    const data = await batchContract.methods.addBatch(batchCode, batchCount, rawMaterialsUsed).encodeABI()
+    const contractData = await batchContract.methods.addBatch(data.batchCode, data.batchCount, data.rawMaterialsUsed).encodeABI()
     const params = [{
       from: account[0],
       to: batchAddress,
-      data: data,
+      data: contractData,
 
     }]
 
@@ -131,6 +139,7 @@ const BatchRegistrationInteraction = () => {
     console.log(flattenedBatches)
     return totalBatchesArray
   }
+
   useEffect(() => {
     if (contract) {
       retrieveAllBatches()
@@ -139,7 +148,8 @@ const BatchRegistrationInteraction = () => {
 
 
   return (
-    <Card>
+ <form onSubmit={handleSubmit(onSubmit)} >
+     <Card>
       <CardHeader>
         <CardTitle className='font-spaceGrotesk text-[1.8rem]'>Batch Registration</CardTitle>
         <CardDescription className='font-jakarta text-md text-gray-800 font-semibold'>
@@ -148,28 +158,36 @@ const BatchRegistrationInteraction = () => {
       </CardHeader>
 
       <CardContent className="space-y-2 font-jakarta">
-        <div className="space-y-1 mb-[2rem] flex  h-[8rem] items-start justify-center w-full flex-col gap-2">
+        <form className="space-y-1 mb-[2rem] flex  h-[8rem] items-start justify-center w-full flex-col gap-2">
           <h2 className='text-xl'> Search for a product to add</h2>
-          <Label htmlFor="product-code">Product Code</Label>
-          <Input id="product-code" value={productCode} onChange={(e) => { setProductCode(e.target.value) }} placeholder='ec2356' />
+          <Label className='flex flex-col gap-2' htmlFor="product-code">Product Code</Label>
+          <Input id="product-code" value={productCode}  placeholder="product code (13 bit) " onChange={(e) => { setProductCode(e.target.value) }} />
           <Button className='text-md w-[6rem] h-[2.5rem]' onClick={findProductsByCode}> Search </Button>
-        </div>
+        </form>
 
         <div className="space-y-1">
-          <Label htmlFor="batch-code">Batch Code</Label>
-          <Input id="name" placeholder='234ec1' value={batchCode} onChange={(e) => { setBatchCode(e.target.value) }} />
+          <Label className='flex flex-col gap-2' htmlFor="batch-code">Batch Code
+          <Input id="batch_code" {...register('batch_code')} placeholder="batch code (13 bit)"  />
+          <div className='text-red-500'>{errors.batch_code?.message}</div>
+          </Label>
         </div>
         <div className="space-y-1">
-          <Label htmlFor="batch-count">Batch Count</Label>
-          <Input id="batch-count" placeholder='100' value={batchCount} onChange={(e) => { setBatchCount(e.target.value) }} />
+          <Label className='flex flex-col gap-2' htmlFor="batch-count">Batch Count 
+          <Input  id="batch-count" {...register('batch_count')} placeholder='100' />
+          <div className='text-red-500'>{errors.batch_count?.message}</div>
+          </Label>
+
         </div>
         <div className="space-y-1">
-          <Label htmlFor="raw-materials" >Raw Materials Used</Label>
-          <Input id="raw-materials" placeholder='121213' value={rawMaterialsUsed} onChange={(e) => { setRawMaterialsUsed(e.target.value) }} />
+          <Label className='flex flex-col gap-2' htmlFor="raw-materials_used" >Raw Materials Used
+          <Input id="raw-materials_used" {...register('raw_materials_used')} placeholder='Tea'  />
+          <div className='text-red-500'>{errors.raw_materials_used?.message}</div>
+          </Label>
         </div>
       </CardContent>
       <CardFooter>
         <Button onClick={addBatch} className='font-jakarta'>Add Batch</Button>
+        <Button onClick={retrieveAllBatches} className=' ml-8 font-jakarta'>Fetch Batches</Button>
       </CardFooter>
 
       <CardContent>
@@ -206,6 +224,7 @@ const BatchRegistrationInteraction = () => {
       </CardContent> */}
 
     </Card>
+ </form>
   )
 }
 
